@@ -1,3 +1,4 @@
+// @ts-ignore
 chrome.runtime.onInstalled.addListener(() => {
     chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
         chrome.declarativeContent.onPageChanged.addRules([
@@ -12,4 +13,3 @@ chrome.runtime.onInstalled.addListener(() => {
         ]);
     });
 });
-export {}
