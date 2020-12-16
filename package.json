@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "concurrently \"react-scripts build\" yarn:chrome",
+    "build": "react-scripts build && yarn chrome",
     "chrome": "tsc --build ./src/scripts/tsconfig.json",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

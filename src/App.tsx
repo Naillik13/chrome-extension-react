@@ -1,37 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect, useState} from 'react';
 import './App.css';
-import {Profile} from "./models/Profile";
+import User from "./components/User";
 
-interface State extends Profile {}
-
-export class App extends React.Component<{}, State> {
-  state = {} as State
-  public componentDidMount(): void {
-    if (chrome && chrome.tabs) {
-      chrome.tabs.query({ currentWindow: true, active: true }, tabs => {
-        const tab = tabs[0];
-        chrome.tabs.sendMessage(tab.id || 0, { from: "popup", subject: "getFullName" }, response => {
-          this.setState({
-            fullName: response.fullName,
-            title: response.title,
-            country: response.country,
-            imageUrl: response.imageUrl,
-          })
-        });
-      });
-    }
-  }
-  render() {
+const App: React.FunctionComponent<{}> = () => {
+    const [fullName, setFullName] = useState("Stéphane Jean");
+    const [country, setCountry] = useState("France");
+    const [title, setTitle] = useState("Architect");
+    const [imageUrl, setImageUrl] = useState("https://us.123rf.com/450wm/tuktukdesign/tuktukdesign1703/tuktukdesign170300051/73535462-man-user-icon-profil-de-la-personne-avatar-glyph-illustration-vecteur.jpg?ver=6")
+    useEffect(() => {
+        if (chrome && chrome.tabs) {
+            chrome.tabs.query({ currentWindow: true, active: true }, tabs => {
+                const tab = tabs[0];
+                chrome.tabs.sendMessage(tab.id || 0, { from: "popup", subject: "getFullName" }, response => {
+                    setFullName(response.fullName);
+                    setTitle(response.title);
+                    setCountry(response.country);
+                    setImageUrl(response.imageUrl);
+                });
+            });
+        }
+    });
     return (
         <div className="app">
-          <div>{this.state.fullName}</div>
-          <div>{this.state.title}</div>
-          <div>{this.state.country}</div>
-          <img src={this.state.imageUrl || "nosrc"} alt="profileImage"/>
+            <User fullName={fullName} country={country} title={title} imageUrl={imageUrl} />
         </div>
     );
-  };
-}
+
+};
 
 export default App;

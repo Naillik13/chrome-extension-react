@@ -1,33 +1,32 @@
-// @ts-ignore
-import {Profile} from '../models/Profile'
+import { Profile } from "../models/profile";
 
 async function getProfileInfo(): Promise<Profile> {
     const fullName = document.querySelectorAll(".pv-top-card--list li")[0];
     const title = document.querySelectorAll(".pv-top-card h2.mt1")[0];
     const country = document.querySelectorAll(".pv-top-card--list-bullet li")[0];
-    const img = document.querySelectorAll(".pv-top-card__image img")[0];
+    const image = document.querySelectorAll(".pv-top-card--photo img")[0];
 
-    return {
-        fullName: fullName.textContent ? fullName.textContent.replace(/\n/, "").trim() : null,
-        title: title.textContent ? title.textContent.replace(/\n/, "").trim() : null,
-        country: country.textContent ? country.textContent.replace(/\n/, "").trim() : null,
-        imageUrl: img.getAttribute('url')
+    const response: Profile = {
+        fullName: fullName.textContent.replace(/\n/, "").trim(),
+        title: title.textContent.replace(/\n/, "").trim(),
+        country: country.textContent.replace(/\n/, "").trim(),
+        imageUrl: image.getAttribute("src")
     };
+
+    return response;
 }
 
-let profile: Profile | null = null;
+let profile: Profile = null;
 setTimeout(() => {
     getProfileInfo().then(result => {
-        profile = result || profile
-    })
+        profile = result || profile;
+    });
 }, 5000);
 
 chrome.runtime.onMessage.addListener(async (msg, sender, response) => {
     if (msg.from === "popup" && msg.subject === "getFullName") {
-        console.log(profile);
-        response(profile)
-    } else {
-        response("not hello");
+        response(profile);
     }
-    return true
+
+    return true;
 });
