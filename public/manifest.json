@@ -1,25 +1,36 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
+  "manifest_version": 2,
+  "browser_action": {
+    "default_icon": "logo512.png",
+    "default_popup": "index.html"
+  },
+  "short_name": "Chrome Ext",
+  "name": "Chrome Extension",
+  "description": "Best chrome extension",
+  "version": "1.0.0",
+  "background": {
+    "scripts": [
+      "js/background.js"
+    ]
+  },
+  "content_scripts": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "matches": ["*://*.linkedin.com/in/*"],
+      "js": ["js/linkedin.js"],
+      "run_at": "document_start"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "icons": {
+    "32": "32.png",
+    "48": "48.png",
+    "64": "64.png",
+    "128": "128.png",
+    "512": "logo512.png"
+  },
+  "permissions": [
+    "activeTab",
+    "background",
+    "declarativeContent",
+    "https://www.linkedin.com/in/*"
+  ]
 }
